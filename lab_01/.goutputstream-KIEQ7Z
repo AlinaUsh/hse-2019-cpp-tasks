@@ -1,0 +1,12 @@
+CFLAGS = -Iinclude -Wall -Wextra -Werror
+
+all: lab1
+
+lab1: bin/main.o bin/io.o bin/util.o bin/algorithm.o
+	gcc -o lab1 bin/main.o bin/io.o bin/util.o bin/algorithm.o
+
+clean: 
+	rm lab1 -Rf bin
+
+bin:
+	mkdir bin
