@@ -1,0 +1,161 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{caption}
+\usepackage{tikz}
+\usepackage{subcaption}
+\usepackage{imakeidx}
+\usepackage[russian]{cleveref}
+\usepackage[a4paper,left=15mm,right=15mm,top=30mm,bottom=20mm]{geometry}
+\parindent=0mm
+\parskip=3mm
+
+\makeindex
+\pagestyle{empty}
+
+\title{ДЗ 2, Алгоритмы}
+\author{Ушакова Алина}
+\date{14.09.2019}
+
+\begin{document}
+
+\maketitle
+
+\begin{enumerate}
+\item % Задание 1
+a)$2^k \leq n - 1$ => $k = [\log_2(n - 1)]$
+
+$2^0 + 2^1 + 2^2 + ... + 2^k = \frac{1 \cdot (1 - 2^{k + 1})}{1 - 2} = 2^{k + 1} - 1 = 2 \cdot 2^{[\log_2 (n - 1)] + 1} - 1 = 4\cdot 2^{[\log_2 (n - 1)]} - 1 \sim  4\cdot n - 3 = \Theta(n)$
+
+b) $\log 3 + ... + \log(\left[ \frac{n - 1}{3} \right] \cdot 3) = \log (3 \cdot ... \cdot (\left[\frac{n - 1}{3} \right] \cdot 3)) = \log(3^{\left[\frac{n - 1}{3}\right]} \cdot (1\cdot ... \cdot \left[\frac{n - 1}{3}\right])) = 
+\log(3^{\left[\frac{n - 1}{3}\right]} \cdot \left[\frac{n - 1}{3}\right]!)$
+
+$\sim \Theta(n) + \Theta(n!) = \Theta(n) + \Theta(n\log n) = \Theta(n \log n)$
+
+c) Т.к. округление целочисленное, то внутренний цикл начинает выполняться при $i > [\sqrt{n}]$. Просуммируем кол-во действий, выполняемых во внутреннем цикле: 
+\[\sum\limits_{i = \sqrt{n}}^{n}\left(i - \frac{n}{i}\right) = n\cdot\sum\limits_{i = \sqrt{n}}^{n}\left( \frac{i}{n} - \frac{1}{i}\right) = n\cdot\sum\limits_{i = \sqrt{n}}^{n}\frac{i}{n} - n\cdot\sum\limits_{i = \sqrt{n}}^{n}\frac{1}{i} = 
+\sum\limits_{i = \sqrt{n}}^{n} i - n\cdot\sum\limits_{i = \sqrt{n}}^{n}\frac{1}{i} = \Theta(n^2) - o(n^2) = \Theta(n^2)\]
+
+d)$\Theta(n)$, т.к. обе переменные(x и y) проходят от 1 до n по 1 разу.
+\item % Задание 2
+a) \%MOD работает долго, но мы можем постараться использовать его реже, делая проверку:
+
+long long t = a[i] * b[i]:
+
+if (t >= MOD)
+
+    \qquad t \%= MOD;
+    
+sum += t;
+
+if (sum >= MOD)
+
+\qquad sum -= MOD;
+
+b) Поскольку каждый раз считать pow долго, то можно создать массив степеней x(который мы посчитаем заранее pow\_x[i] = pow\_x[i - 1] * x), а потом не  считать заново, а просто обращаться к нужному значению. Рекурсию стоит заменить на цикл, т.к. это позволит нам использовать меньше памяти и совершать меньше действий(тогда можно даже не хванить массив pow\_, т.к. предыдущую степень можно вычислить)
+
+double Exp(double x, int dep=0, double F=1) 
+
+\{
+
+\qquad if (dep >= 20) return 0;
+
+\qquad double pow\_[20];
+
+\qquad pow\_[0] = 1;
+
+\qquad for (int i = 1; i < 20; i++)
+
+\qquad\qquad pow\_[i] = pow\_[i - 1] * x;
+
+\qquad double ans = 0;
+
+\qquad for (int i = dep; i < 20; i++)
+
+\qquad\{
+
+\qquad\qquad ans += pow\_[dep] / F;
+
+\qquad\qquad F *= dep + 1;
+
+\qquad\qquad dep += 1;
+
+\qquad\}
+
+\qquad return ans;
+%return pow(x, dep) / F + Exp(x, dep+1, F*(dep+1));
+
+\}
+
+
+c) Сложение строк работает долго(за длину строки), а в данной задаче это не имеет смысла => будет лучше выводить результать сразу. 
+
+\item % Задание 3
+Заметим, что при добавлении нового элемента к отрезку, сумма может только увеличиться(т.к. все элементы положительны). Будем поддерживать 2 конца отрезка(l - левый и r - правый) и сумму sum на отрезке. Если сумма меньше той, которую нам надо получить(s), то мы добавляем новый элемент к отрезку(добавляем к sum значение нового элемента и сдвигаем r). Если же sum > s, то нам нужно убрать элемент из начала отрезка.
+
+   int n, s;
+
+    cin >> n >> s;
+    
+    vector<int> v(n + 1);
+    
+    for (int i = 1; i <= n; i++)
+    
+        \qquad cin >> v[i];
+        
+    int sum = v[1];
+    
+    int l = 1, r = 1;
+    
+    while (r <= n \&\& l <= n)
+    
+    \{
+    
+        \qquad if (sum == s)
+        
+        \qquad \{
+            \qquad cout << l << ' ' << r;
+            
+            \qquad \qquad return 0;
+            
+        \qquad \}
+        
+        \qquad if (sum < s)
+        
+        \qquad \{
+        
+           \qquad \qquad  r++;
+            
+            \qquad \qquad sum += v[r];
+            
+        \qquad \}
+        
+        \qquad else
+        
+        \qquad \{
+        
+           \qquad \qquad  sum -= v[l];
+            
+            \qquad \qquad l++;
+            
+        \qquad \}
+        
+    \}
+
+%Дополнительная часть:
+\item % Задание 1 из доп
+a) $\int\limits_{k = 1}^{n}\frac{1}{k^2}dk = \left.-\frac{1}{k}\right| _{1}^{n} = 1 - \frac{1}{n} = \mathcal{O}(1)$
+
+b)$\int\limits_{k = 1}^{n}\frac{1}{k^{1/2}}dk = \left.2k^{\frac{1}{2}}\right|_1^{n} = 2\sqrt{n} - 2 = \Theta(\sqrt{n})$
+
+c)$\int\limits_{k = 1}^{\infty}\frac{1}{k^{3/2}}dk = \left.\frac{-2}{\sqrt{k}}\right|_1^{\infty} = 2 = \mathcal{O}(1)$
+\item % Задание 2 из доп
+\item % Задание 3 из доп
+\item % Задание 4 из доп
+
+\end{enumerate}
+
+\end{document}
