@@ -2,52 +2,46 @@
 
 #include<stdio.h>
 
-char* my_strcpy(char* restrict s1, const char* restrict s2)
-{
-    char* result = s1;
-    while (*s2){
-        *s1 = *s2;
-        ++s2;
-        ++s1;
+char* my_strcpy(char* restrict dest, const char* restrict source){
+    char* result = dest;
+    while (*source){
+        *dest = *source;
+        ++source;
+        ++dest;
     }
-    *s1 = '\0';
+    *dest = '\0';
     return result;
 }
 
-char *my_strcat(char* restrict s1, const char* restrict s2)
-{
-    if (s2 == NULL)
-        return s1;
-    char* result = s1;
-    while (*s1){
-        ++s1;
+char *my_strcat(char* restrict dst, const char* restrict src){
+    if (src == NULL)
+        return dst;
+    char* result = dst;
+    while (*dst){
+        ++dst;
     }
-    while (*s2){
-        *s1 = *s2;
-        ++s1;
-        ++s2;
+    while (*src){
+        *dst = *src;
+        ++dst;
+        ++src;
     }
-    *s1 = '\0';
+    *dst = '\0';
     return result;
 }
 
-int my_strcmp(const char *s1, const char *s2)
-{
-    while ((*s1 && *s2) && *s1 == *s2)
-    {
-        ++s1;
-        ++s2;
+int my_strcmp(const char *first_str, const char *second_str){
+    while ((*first_str && *second_str) && *first_str == *second_str){
+        ++first_str;
+        ++second_str;
     }
-    return *s1 - *s2;
+    return *first_str - *second_str;
 }
 
-int my_strlen(const char *s)
-{
+int my_strlen(const char *str){
     int len = 0;
-    while (*s)
-    {
+    while (*str){
         len++;
-        ++s;
+        ++str;
     }
     return len;
 }
