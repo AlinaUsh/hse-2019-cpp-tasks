@@ -19,15 +19,17 @@ void add_point(struct intrusive_list *head, int x, int y) {
 
 void remove_point(struct intrusive_list *list, int x, int y) { // removes all (x, y) pairs
 	struct intrusive_node *cur = list->head;
+	struct intrusive_node *next_point;
 	struct point * cur_point;
 	while (cur != NULL)
 	{
+		next_point = cur->next;
 		cur_point = container_of(cur, struct point, node);
 		if ((cur_point->x == x) && (cur_point->y == y)) {
 			remove_node(list, cur);
 			free(cur_point);
 		}
-		cur = cur->next;
+		cur = next_point;
 	}
 	return;
 }
