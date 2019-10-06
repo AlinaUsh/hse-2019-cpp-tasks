@@ -62,10 +62,10 @@ void remove_all_points(struct intrusive_list *list) {
 int main() {
 	struct intrusive_list *list = malloc(sizeof(struct intrusive_list));
 	init_list(list);
+	char *str = malloc(240 * sizeof(char));
 	int correct = 0;
 	while (1 == 1) {
 		correct = 0;
-		char *str = malloc(240 * sizeof(char));
 		scanf("%239s", str);
 		if (strcmp(str, "add") == 0) {
 			correct = 1;
@@ -102,7 +102,7 @@ int main() {
 		if (correct == 0) {
 			printf("%s\n", "Unknown command");
 		}
-		free(str);
 	}
+	free(str);
 	return 0;
 }
