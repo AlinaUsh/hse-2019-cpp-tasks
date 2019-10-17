@@ -36,6 +36,23 @@ void sort_int(int argc, char *argv[]) {
 	return;
 }
 
+
+void sort_str(int argc, char *argv[]) {
+	char* array_str[argc - 2];
+	for (int i = 0; i < argc - 2; i++) {
+		array_str[i] = argv[i + 2];
+	}
+	int failed = mergesort(array_str, sizeof(array_str) / sizeof(array_str[0]), sizeof(array_str[0]), str_gt_comparator);
+	if (failed == 1) {
+		printf("Error: memory allocation failed\n");
+		return;
+	}
+	for (int i = 0; i < argc - 2; i++) {
+		printf("%s ", array_str[i]);
+	}
+	return;
+}
+
 void sort_char(int argc, char *argv[]) {
 	//char *array_char = malloc((argc - 2) * sizeof(char));
 	char array_char[argc - 2];
@@ -46,7 +63,7 @@ void sort_char(int argc, char *argv[]) {
 	if (failed == 1) {
 		//free(array_char);
 		printf("Error: memory allocation failed\n");
-		return 0;
+		return;
 	}
 	for (int i = 0; i < argc - 2; i++) {
 		printf("%c ", array_char[i]);
@@ -63,10 +80,11 @@ int main(int argc, char *argv[]) {
 		sort_int(argc, argv);
 	}
 	if (strcmp(argv[1], "char") == 0) {
-		sort_sort(argc, argv);
+		sort_char(argc, argv);
 	}
 	if (strcmp(argv[1], "str") == 0) {
-		char* array_str[argc - 2];
+		sort_str(argc, argv);
+		/*char* array_str[argc - 2];
 		for (int i = 0; i < argc - 2; i++) {
 			array_str[i] = argv[i + 2];
 		}
@@ -77,7 +95,7 @@ int main(int argc, char *argv[]) {
 		}
 		for (int i = 0; i < argc - 2; i++) {
 			printf("%s ", array_str[i]);
-		}
+		}*/
 	}
 	return 0;
 }
