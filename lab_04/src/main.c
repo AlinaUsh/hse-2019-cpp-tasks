@@ -22,6 +22,9 @@ int main(int argc, char *argv[]) {
 		return 0;
 	}
 	if (strcmp(argv[1], "int") == 0) {
+		
+		//int *array_int = malloc((argc - 2) * sizeof(int));
+
 		int array_int[argc - 2];
 		for (int i = 0; i < argc - 2; i++) {
 			array_int[i] = atoi(argv[i + 2]);
@@ -29,25 +32,30 @@ int main(int argc, char *argv[]) {
 		int failed = mergesort(array_int, sizeof(array_int) / sizeof(int), sizeof(int), int_gt_comparator);
 		if (failed == 1) {
 			printf("Error: memory allocation failed\n");
+			//free(array_int);
 			return 0;
 		}
 		for (int i = 0; i < argc - 2; i++) {
 			printf("%d ", array_int[i]);
 		}
+		//free(array_int);
 	}
 	if (strcmp(argv[1], "char") == 0) {
+		//char *array_char = malloc((argc - 2) * sizeof(char));
 		char array_char[argc - 2];
 		for (int i = 0; i < argc - 2; i++) {
 			array_char[i] = *argv[i + 2];
 		}
 		int failed = mergesort(array_char, sizeof(array_char) / sizeof(char), sizeof(char), char_gt_comparator);
 		if (failed == 1) {
+			//free(array_char);
 			printf("Error: memory allocation failed\n");
 			return 0;
 		}
 		for (int i = 0; i < argc - 2; i++) {
 			printf("%c ", array_char[i]);
 		}
+		//free(array_char);
 	}
 	if (strcmp(argv[1], "str") == 0) {
 		char* array_str[argc - 2];
