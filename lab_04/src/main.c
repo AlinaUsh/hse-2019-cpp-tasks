@@ -84,18 +84,6 @@ int main(int argc, char *argv[]) {
 	}
 	if (strcmp(argv[1], "str") == 0) {
 		sort_str(argc, argv);
-		/*char* array_str[argc - 2];
-		for (int i = 0; i < argc - 2; i++) {
-			array_str[i] = argv[i + 2];
-		}
-		int failed = mergesort(array_str, sizeof(array_str) / sizeof(array_str[0]), sizeof(array_str[0]), str_gt_comparator);
-		if (failed == 1) {
-			printf("Error: memory allocation failed\n");
-			return 0;
-		}
-		for (int i = 0; i < argc - 2; i++) {
-			printf("%s ", array_str[i]);
-		}*/
 	}
 	return 0;
 }
