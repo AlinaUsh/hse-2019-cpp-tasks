@@ -41,9 +41,12 @@ int get_length(intrusive_list *list) {
 void apply(intrusive_list *list, void (*op)(intrusive_node *node, void *data), void *data) {
 	intrusive_node *cur = &list->head;
 	cur = cur->next;
+
 	while (cur != &list->head) {
 		op(cur, data);
 		cur = cur->next;
+		//printf("%s ", "5");
 	}
+		//printf("\n");
 	return;
 }
