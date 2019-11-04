@@ -8,7 +8,6 @@
 void my_print_point(intrusive_node *node, char *format) {
 	point_node *cur_node = get_point(node);
 	printf(format, cur_node->x, cur_node->y);
-	printf("\n");
 	return;
 }
 
