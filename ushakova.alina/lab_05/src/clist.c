@@ -45,8 +45,6 @@ void apply(intrusive_list *list, void (*op)(intrusive_node *node, void *data), v
 	while (cur != &list->head) {
 		op(cur, data);
 		cur = cur->next;
-		//printf("%s ", "5");
 	}
-		//printf("\n");
 	return;
 }
