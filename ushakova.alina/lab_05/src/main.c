@@ -84,8 +84,6 @@ int main(int argc, char *argv[]) {
 		int32_t new_x, new_y;
 		unsigned char buf[6];
 		while (fread(buf, sizeof(char), 6, fin) == 6) {
-			//new_x = buf[2] * 256 * 256 + buf[1] * 256 + buf[0];
-			//new_y = buf[5] * 256 * 256 + buf[4] * 256 + buf[3];
 			get_coordinates(&new_x, &new_y, buf);
 			add_point(l, new_x, new_y);
 		}
@@ -94,21 +92,11 @@ int main(int argc, char *argv[]) {
 	if (strcmp(argv[3], "savetext") == 0) {
 		FILE* fout = fopen(argv[4], "w");
 		save_points(l, save_text, fout);
-		/*if (!fout) {
-			remove_all_points(l);
-			return 1;
-		}
-		apply(l, save_text, fout);*/
 		fclose(fout);
 	}
 	if (strcmp(argv[3], "savebin") == 0) {
 		FILE* fout = fopen(argv[4], "wb");
 		save_points(l, save_bin, fout);
-		/*if (!fout) {
-			remove_all_points(l);
-			return 1;
-		}
-		apply(l, save_bin, fout);*/
 		fclose(fout);
 	}
 	if (strcmp(argv[3], "print") == 0) {
