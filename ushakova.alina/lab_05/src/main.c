@@ -5,25 +5,27 @@
 #include <stddef.h>
 #include <assert.h>
 
-void my_print_point(intrusive_node *node, char *format) {
+void my_print_point(intrusive_node *node, void *format) {
 	point_node *cur_node = get_point(node);
-	printf(format, cur_node->x, cur_node->y);
+	printf((char*)format, cur_node->x, cur_node->y);
 	return;
 }
 
-void counter(intrusive_node *node, int *c) {
-	*c = *c + 1;
+void counter(intrusive_node *node, void *c) {
+	*(int*)c = *(int*)c + 1;
 	return;
 }
 
-void save_text(intrusive_node *node, FILE *fout) {
+void save_text(intrusive_node *node, void *fout) {
+	fout = (FILE*)fout;
 	point_node *cur_node = get_point(node);
 	fprintf(fout, "%d %d\n", cur_node->x, cur_node->y);
 	return;
 }
 
 
-void save_bin(intrusive_node *node, FILE *fout) {
+void save_bin(intrusive_node *node, void *fout) {
+	fout = (FILE*)fout;
 	point_node *cur_node = get_point(node);
 	int32_t cur_num;
 	cur_num = cur_node->x;
@@ -39,6 +41,23 @@ void save_bin(intrusive_node *node, FILE *fout) {
 		fwrite(&c, sizeof(char), 1, fout);
 		cur_num = cur_num >> 8;
 	}	
+	return;
+}
+
+void get_coordinates(int32_t *x, int32_t *y, unsigned char *buf) {
+	int32_t base = 256;
+	*x = (int32_t)buf[2] * base * base + (int32_t)buf[1] * base + (int32_t)buf[0];
+	*y = (int32_t)buf[5] * base * base + (int32_t)buf[4] * base + (int32_t)buf[3];
+	return;
+}
+
+void save_points(intrusive_list *list, void (*save)(intrusive_node *node, void *fout), FILE* fout) {
+	if (!fout) {
+		remove_all_points(list);
+		return;
+	}
+	apply(list, save, fout);
+	//fclose(fout);
 	return;
 }
 
@@ -65,28 +84,31 @@ int main(int argc, char *argv[]) {
 		int32_t new_x, new_y;
 		unsigned char buf[6];
 		while (fread(buf, sizeof(char), 6, fin) == 6) {
-			new_x = buf[2] * 256 * 256 + buf[1] * 256 + buf[0];
-			new_y = buf[5] * 256 * 256 + buf[4] * 256 + buf[3];
+			//new_x = buf[2] * 256 * 256 + buf[1] * 256 + buf[0];
+			//new_y = buf[5] * 256 * 256 + buf[4] * 256 + buf[3];
+			get_coordinates(&new_x, &new_y, buf);
 			add_point(l, new_x, new_y);
 		}
 		fclose(fin);
 	}
 	if (strcmp(argv[3], "savetext") == 0) {
 		FILE* fout = fopen(argv[4], "w");
-		if (!fout) {
+		save_points(l, save_text, fout);
+		/*if (!fout) {
 			remove_all_points(l);
 			return 1;
 		}
-		apply(l, save_text, fout);
+		apply(l, save_text, fout);*/
 		fclose(fout);
 	}
 	if (strcmp(argv[3], "savebin") == 0) {
 		FILE* fout = fopen(argv[4], "wb");
-		if (!fout) {
+		save_points(l, save_bin, fout);
+		/*if (!fout) {
 			remove_all_points(l);
 			return 1;
 		}
-		apply(l, save_bin, fout);
+		apply(l, save_bin, fout);*/
 		fclose(fout);
 	}
 	if (strcmp(argv[3], "print") == 0) {
