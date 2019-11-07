@@ -57,7 +57,30 @@ void save_points(intrusive_list *list, void (*save)(intrusive_node *node, void *
 		return;
 	}
 	apply(list, save, fout);
-	//fclose(fout);
+	return;
+}
+
+void read_text(intrusive_list *l, FILE* fin) {
+	if (!fin) {
+		return;
+	}
+	int32_t new_x, new_y;
+	while (fscanf(fin, "%d %d", &new_x, &new_y) >= 0) {
+		add_point(l, new_x, new_y);
+	}
+	return;
+}
+
+void read_bin(intrusive_list *l, FILE* fin) {
+	if (!fin) {
+		return;
+	}
+	int32_t new_x, new_y;
+	unsigned char buf[6];
+	while (fread(buf, sizeof(char), 6, fin) == 6) {
+		get_coordinates(&new_x, &new_y, buf);
+		add_point(l, new_x, new_y);
+	}
 	return;
 }
 
@@ -67,26 +90,12 @@ int main(int argc, char *argv[]) {
 	init_list(l);
 	if (strcmp(argv[1], "loadtext") == 0) {	
 		FILE* fin = fopen(argv[2], "r");
-		if (!fin) {
-			return 1;
-		}
-		int32_t new_x, new_y;
-		while (fscanf(fin, "%d %d", &new_x, &new_y) >= 0) {
-			add_point(l, new_x, new_y);
-		}
+		read_text(l, fin);
 		fclose(fin);
 	}
 	else {
 		FILE* fin = fopen(argv[2], "rb");
-		if (!fin) {
-			return 1;
-		}
-		int32_t new_x, new_y;
-		unsigned char buf[6];
-		while (fread(buf, sizeof(char), 6, fin) == 6) {
-			get_coordinates(&new_x, &new_y, buf);
-			add_point(l, new_x, new_y);
-		}
+		read_bin(l, fin);
 		fclose(fin);
 	}
 	if (strcmp(argv[3], "savetext") == 0) {
