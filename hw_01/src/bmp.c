@@ -113,16 +113,16 @@ void rotate(BMPImage *image, BMPImage *new_image) {
         return;
     }
     int new_index = 0;
-    for (int i = 0; i < h; i++) {
-        for (int j = 0; j < w; j++) {
+    for (int i = w - 1; i >= 0; i--) {
+        for (int j = 0; j < h; j++) {
             for (int k = 0; k < 3; k++) {
-                new_image->data[position_y(w - j - 1, image->header.height_px) + position_x(i) + k] = image->data[new_index];
+                new_image->data[new_index] = image->data[position_y(j, image->header.width_px) + position_x(i) + k];
                 new_index++;
             }
         }
         int padding = (4 - (3 * h) % 4) % 4;
         for (int j = 0; j < padding; j++) {
-            new_image->data[new_index] = 0x00;
+	    new_image->data[new_index] = 0x00;
             new_index++;
         }
     }
