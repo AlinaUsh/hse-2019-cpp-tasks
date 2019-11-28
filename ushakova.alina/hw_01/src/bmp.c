@@ -10,7 +10,7 @@ void load_bmp(const char *filename, BMPImage *image) {
         fclose(input);
         return;
     }
-    unsigned int correct = fread(&image->header, 54, 1, input);
+    unsigned int correct = fread(&image->header, (int)sizeof(image->header), 1, input);
     if (correct != 1) {
         fclose(input);
         return;
@@ -58,20 +58,14 @@ int ciel(int x) {
 }
 
 uint32_t position_y(int y, int x) {
-    return y * (3 * x + (4 - (3 * x) % 4) % 4);
+    return y * ciel(x);
 }
 
 uint32_t position_x(int x) {
     return x * 3;
 }
 
-int crop(BMPImage *image, BMPImage *new_image, int x, int y, int w, int h) {
-    y = image->header.height_px - (y + h);
-    if (x + w > image->header.width_px || y + h > image->header.height_px ||
-        x < 0 || y < 0) {
-        printf("This area can not be croped");
-        return 1;
-    }
+int init_image(BMPImage *image, BMPImage *new_image, int w, int h) {
     new_image->header = image->header;
     new_image->header.width_px = w;
     new_image->header.height_px = h;
@@ -81,6 +75,19 @@ int crop(BMPImage *image, BMPImage *new_image, int x, int y, int w, int h) {
     if (new_image->data == NULL) {
         printf("Not enough memory");
         return 1;
+    }
+    return 0;
+}
+
+int crop(BMPImage *image, BMPImage *new_image, int x, int y, int w, int h) {
+    y = image->header.height_px - (y + h);
+    if (x + w > image->header.width_px || y + h > image->header.height_px ||
+        x < 0 || y < 0 || w < 0 || h < 0) {
+        printf("This area can not be croped");
+        return 1;
+    }
+    if (init_image(image, new_image, w, h) == 1) {
+	return 1;
     }
     int new_index = 0;
     for (int i = 0; i < h; i++) {
@@ -102,15 +109,8 @@ int crop(BMPImage *image, BMPImage *new_image, int x, int y, int w, int h) {
 void rotate(BMPImage *image, BMPImage *new_image) {
     int32_t w = image->header.width_px;
     int32_t h = image->header.height_px;
-    new_image->header = image->header;
-    new_image->header.width_px = h;
-    new_image->header.height_px = w;
-    new_image->header.image_size_bytes = w * ciel(h);
-    new_image->header.size = sizeof(new_image->header) + new_image->header.image_size_bytes;
-    new_image->data = malloc(new_image->header.image_size_bytes);
-    if (new_image->data == NULL) {
-        printf("Not enough memory");
-        return;
+    if (init_image(image, new_image, h, w) == 1) {
+	return;
     }
     int new_index = 0;
     for (int i = w - 1; i >= 0; i--) {
