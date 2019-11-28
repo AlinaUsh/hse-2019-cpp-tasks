@@ -1,10 +1,10 @@
+#pragma once
 #include <stdlib.h>
 #include <malloc.h>
 #include <stdio.h>
 #include <stdint.h>
 
 #pragma pack(push, 1)
-#pragma once
 
 typedef struct {
     uint16_t type;              // Type
@@ -38,6 +38,8 @@ void load_bmp(const char *filename, BMPImage *image);
 FILE *open_file(const char *filename, const char *mode);
 
 void save_bmp(const char *filename, BMPImage *image);
+
+int init_image(BMPImage *image, BMPImage *new_image, int w, int h);
 
 int crop(BMPImage *image, BMPImage *new_image, int x, int y, int w, int h);
 
