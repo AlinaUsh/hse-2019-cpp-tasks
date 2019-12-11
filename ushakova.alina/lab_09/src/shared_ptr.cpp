@@ -15,7 +15,7 @@ shared_ptr::shared_ptr(const shared_ptr& other) {
     }
 }
 
-shared_ptr& shared_ptr::operator=(shared_ptr other) {
+shared_ptr& shared_ptr::operator=(shared_ptr other) 
     std::swap(storage_, other.storage_);
     return *this;
 }
