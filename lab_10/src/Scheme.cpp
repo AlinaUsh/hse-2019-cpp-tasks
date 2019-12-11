@@ -32,7 +32,6 @@ void Scheme::remove_figure(int id) {
         return;
     }
     delete figures_[pos];
-    
     for (int i = pos; i < number_of_figures; i++) {
         figures_[i] = figures_[i + 1];
     }
