@@ -1,6 +1,8 @@
 #include<iostream>
 #include "Scheme.hpp"
 
+const int kNotFound = -1;
+
 Scheme::Scheme(int capacity) {
     this->figures_ = new Figure*[capacity];
     this->number_of_figures = 0;
@@ -22,13 +24,12 @@ int Scheme::find_fig(int id) {
         if (figures_[i]->get_id() == id)
             return i;
     }
-    return -1;
+    return kNotFound;
 }
 
 void Scheme::remove_figure(int id) {
     int pos = find_fig(id);
-    if (pos == -1) {
-        std::cout << "No such figure\n";
+    if (pos == kNotFound) {
         return;
     }
     delete figures_[pos];
@@ -45,7 +46,7 @@ void Scheme::print_all_figures() {
 
 void Scheme::zoom_figure(int id, int factor) {
     int pos = find_fig(id);
-    if (pos != -1) {
+    if (pos == kNotFound) {
         return;
     }
     figures_[pos]->zoom(factor);
@@ -56,13 +57,12 @@ Figure* Scheme::is_inside_figure(int x, int y) {
         if (figures_[i]->is_inside(x, y))
             return figures_[i];
     }
-    std::cout << "No such figure\n";
     return nullptr;
 }
 
 void Scheme::move(int id, int new_x, int new_y) {
     int pos = find_fig(id);
-    if (pos != -1) {
+    if (pos == kNotFound) {
         return;
     }
     figures_[pos]->move(new_x, new_y);
