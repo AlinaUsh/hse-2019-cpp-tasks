@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 
-#include "../include/Test.h"
+#include "Test.h"
 
 int Test::totalNum;
 int Test::failedNum;

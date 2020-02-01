@@ -1,4 +1,4 @@
-#include "../include/StdioBoardView.h"
+#include "StdioBoardView.h"
 #include <iostream>
 
 void StdioBoardView::setSilenceMode() {
@@ -20,7 +20,7 @@ bool StdioBoardView::readCell(int &x, int &y, Player cur_player) {
 }
 
 void StdioBoardView::runGame() {
-    Player cur_player(player_X);
+    Player cur_player(player_O);
     int x, y;
     while (true) {
         printBoard();
