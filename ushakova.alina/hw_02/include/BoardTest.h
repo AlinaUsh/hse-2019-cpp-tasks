@@ -2,7 +2,7 @@
 #define HW_02_BOARDTEST_H
 
 #include "Test.h"
-#include "../include/Board.h"
+#include "Board.h"
 
 class BoardTest : public Test {
 private:

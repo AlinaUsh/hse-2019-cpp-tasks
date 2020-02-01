@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cstring>
-#include "../include/StdioBoardView.h"
-#include "../include/Board.h"
+#include "StdioBoardView.h"
+#include "Board.h"
 
 int main(int argc, char *argv[]) {
     Board new_board;
