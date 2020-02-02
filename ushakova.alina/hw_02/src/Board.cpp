@@ -2,30 +2,35 @@
 #include "Board.h"
 
 Board::Board() {
-    for (int i = 0; i < _size; i++) {
-        for (int j = 0; j < _size; j++) {
-            _board[i][j] = cell_empty;
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            board[i][j] = cell_empty;
         }
     }
 }
 
 void Player::changePlayer() {
-    if (_player == player_O) {
-        _player = player_X;
-        _name = 'X';
+    if (player == player_O) {
+        player = player_X;
         return;
     }
-    _player = player_O;
-    _name = 'O';
+    player = player_O;
 }
 
 void Player::printRequest() {
-    std::cout << _name;
+    switch (player) {
+        case player_X:
+            std::cout << "X";
+            break;
+        case player_O:
+            std::cout << "O";
+            break;
+    }
     std::cout << " move: ";
 }
 
 cell Board::getCell(int x, int y) const{
-    return _board[x][y];
+    return board[x][y];
 }
 
 bool Board::canMove(int x, int y) {
@@ -37,10 +42,10 @@ bool Board::canMove(int x, int y) {
 }
 
 void Board::move(int x, int y, Player cur_player) {
-    if (cur_player._player == player_O)
-        _board[x][y] = cell_O;
+    if (cur_player.player == player_O)
+        board[x][y] = cell_O;
     else
-        _board[x][y] = cell_X;
+        board[x][y] = cell_X;
 }
 
 bool Board::sameInLine(int x, int y, int delta_x, int delta_y) {
@@ -66,22 +71,19 @@ bool Board::sameInLine(int x, int y, int delta_x, int delta_y) {
     return (cnt >= 5);
 }
 
-game_status Board::getState(int x, int y) {
-    if (sameInLine(x, y, 1, 0)) {
-        return player_wins;
-    }
-    if (sameInLine(x, y, 0, 1)) {
-        return player_wins;
-    }
-    if (sameInLine(x, y, 1, 1)) {
-        return player_wins;
-    }
-    if (sameInLine(x, y, -1, 1)) {
-        return player_wins;
+game_status Board::getState(int x, int y, Player cur_player) {
+    if (sameInLine(x, y, 1, 0) || sameInLine(x, y, 0, 1) || 
+        sameInLine(x, y, 1, 1) || sameInLine(x, y, -1, 1)) {
+        switch (cur_player.player) {
+            case player_X:
+                return X_wins;
+            case player_O:
+                return O_wins;
+        }
     }
     int num_empty = 0;
-    for (int i = 0; i < _size; i++) {
-        for (int j = 0; j < _size; j++) {
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
             if (getCell(i, j) == cell_empty)
                 num_empty++;
         }

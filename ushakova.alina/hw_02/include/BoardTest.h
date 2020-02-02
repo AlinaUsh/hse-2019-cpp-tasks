@@ -24,8 +24,6 @@ private:
     void testChangePlayer1();
     void testChangePlayer2();
 
-    // ...
-
 public:
     void runAllTests() override;
 };

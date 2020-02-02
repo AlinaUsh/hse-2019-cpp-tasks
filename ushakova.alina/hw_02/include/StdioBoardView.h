@@ -5,7 +5,7 @@
 
 class StdioBoardView {
 public:
-    StdioBoardView(Board &board) : _board(board) {};
+    StdioBoardView(Board &board) : board(board) {};
     ~StdioBoardView() = default;
 
     /** Основной цикл игры, от начала до конца. */
@@ -16,8 +16,8 @@ public:
     void printBoard();
     bool readCell(int &x, int &y, Player cur_player);
 private:
-    bool _silence_mode = false;
-    Board &_board;
+    bool silence_mode = false;
+    Board &board;
 };
 
 #endif //HW_02_STDIOBOARDVIEW_H
