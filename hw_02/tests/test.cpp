@@ -3,6 +3,8 @@
 int main() {
     BoardTest bt;
     bt.runAllTests();
-    bt.showFinalResult();
+    if (!bt.showFinalResult()) {
+        return 1;
+    }
     return 0;
 }

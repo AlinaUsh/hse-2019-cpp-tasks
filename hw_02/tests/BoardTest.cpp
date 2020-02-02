@@ -23,7 +23,7 @@ void BoardTest::testDraw() {
             }
         }
     }
-    DO_CHECK(b.getState(3, 3) == draw);
+    DO_CHECK(b.getState(3, 3, player_1) == draw);
 }
 
 void BoardTest::testWin1() {
@@ -36,7 +36,7 @@ void BoardTest::testWin1() {
     for (int i = 0; i < 4; i++) {
         b.move(1, i, player_2);
     }
-    DO_CHECK(b.getState(0, 2) == player_wins);
+    DO_CHECK(b.getState(0, 2, player_1) == X_wins);
 }
 
 
@@ -50,7 +50,7 @@ void BoardTest::testWin2() {
     for (int i = 0; i < 5; i++) {
         b.move(9 - i, 7, player_2);
     }
-    DO_CHECK(b.getState(9, 7) == player_wins);
+    DO_CHECK(b.getState(9, 7, player_2) == O_wins);
 }
 
 void BoardTest::testNotEnded() {
@@ -59,7 +59,7 @@ void BoardTest::testNotEnded() {
     Player player_2(player_O);
     b.move(0, 0, player_1);
     b.move(5, 5, player_2);
-    DO_CHECK(b.getState(0, 0) == not_ended);
+    DO_CHECK(b.getState(0, 0, player_1) == not_ended);
 }
 
 void BoardTest::testMove1() {
@@ -116,13 +116,13 @@ void BoardTest::testSameInLine2() {
 void BoardTest::testChangePlayer1() {
     Player player(player_O);
     player.changePlayer();
-    DO_CHECK(player._player == player_X && player._name == 'X');
+    DO_CHECK(player.player == player_X);
 }
 
 void BoardTest::testChangePlayer2() {
     Player player(player_X);
     player.changePlayer();
-    DO_CHECK(player._player == player_O && player._name == 'O');
+    DO_CHECK(player.player == player_O);
 }
 
 void BoardTest::runAllTests() {
@@ -144,3 +144,4 @@ void BoardTest::runAllTests() {
     testChangePlayer1();
     testChangePlayer2();
 }
+
