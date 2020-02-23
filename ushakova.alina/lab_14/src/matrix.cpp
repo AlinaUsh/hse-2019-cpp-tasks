@@ -1,17 +1,18 @@
 #include "matrix.h"
 #include <iostream>
 #include <fstream>
+#include <cstring>
 
 Matrix::Matrix(int h, int w): height(h), width(w){
     try {
         matrix.resize(height);
-    } catch (std::bad_alloc) {
+    } catch (const std::bad_alloc&) {
         throw MatrixException("Unable to allocate memory.");
     }
     for (int i = 0; i < height; i++) {
         try {
             matrix[i].resize(width, 0);
-        } catch (std::bad_alloc) {
+        } catch (const std::bad_alloc&) {
             throw MatrixException("Unable to allocate memory.");
         }
     }

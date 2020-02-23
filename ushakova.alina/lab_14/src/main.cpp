@@ -42,7 +42,7 @@ int main() {
                 matrixList[reg1] *= matrixList[reg2];
                 continue;
             }
-        } catch (MatrixException except) {
+        } catch (const MatrixException &except) {
             std::cout << except.what() << '\n';
         }
     }
