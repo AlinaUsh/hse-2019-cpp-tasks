@@ -43,7 +43,7 @@ int main() {
                 continue;
             }
         } catch (MatrixException except) {
-            std::cerr << except.what() << '\n';
+            std::cout << except.what() << '\n';
         }
     }
     return 0;
