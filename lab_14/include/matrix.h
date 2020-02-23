@@ -8,7 +8,7 @@
 
 class Matrix {
 public:
-    Matrix(){};
+    Matrix() = default;
     Matrix(int h, int w);
     ~Matrix() = default;
 

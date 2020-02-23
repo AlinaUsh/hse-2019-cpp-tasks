@@ -5,9 +5,9 @@
 
 class MatrixException : public std::exception {
 public:
-    MatrixException(std::string new_message);
+    explicit MatrixException(std::string new_message);
 
-    std::string what();
+    const char* what() const _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_USE_NOEXCEPT override;
 
     std::string message;
 };
