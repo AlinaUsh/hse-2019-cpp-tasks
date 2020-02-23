@@ -24,16 +24,6 @@ void Matrix::readMatrix(std::string filename) {
     if (!in.is_open()) {
         throw MatrixException("LOAD: unable to open file.");
     }
-    /*if (in.eof()) {
-        in.close();
-        throw MatrixException("LOAD: invalid file format.");
-    }
-    in >> h;
-    if (in.eof()) {
-        in.close();
-        throw MatrixException("LOAD: invalid file format.");
-    }
-    in >> w;*/
     if (!(in >> h)) {
         throw MatrixException("LOAD: invalid file format.");
     }
@@ -43,11 +33,6 @@ void Matrix::readMatrix(std::string filename) {
     *this = Matrix(h, w);
     for (int i = 0; i < h; i++) {
         for (int j = 0; j < w; j++) {
-            /*if (in.eof()) {
-                in.close();
-                throw MatrixException("LOAD: invalid file format.");
-            }
-            in >> matrix[i][j];*/
             if (!(in >> matrix[i][j])) {
                 throw MatrixException("LOAD: invalid file format.");
             }
