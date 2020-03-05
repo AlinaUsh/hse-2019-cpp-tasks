@@ -81,7 +81,7 @@ namespace my_vector {
         capacity_ = std::move(v.capacity_);
         array_ = std::move(v.array_);
         v.capacity_ = 0;
-        v.size() = 0;
+        v.size_ = 0;
         v.array_ = nullptr;
         return *this;
     }
