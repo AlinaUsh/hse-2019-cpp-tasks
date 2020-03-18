@@ -7,6 +7,8 @@
 
 namespace lab_13 {
 
+    const uint32_t BYTE = 8;
+
     template<typename T, std::size_t N>
     class my_array {
     public:
@@ -61,19 +63,19 @@ namespace lab_13 {
     template <std::size_t N>
     class my_array<bool, N> {
     private:
-        char array_[(N + 7) / 8];
+        uint8_t array_[(N + BYTE - 1) / BYTE];
         class Proxy {
         public:
-            Proxy(const char* data, std::size_t bit) : data_(const_cast<char *>(data)), bit_(bit % 8) {};
+            Proxy(uint8_t &data, std::size_t bit) : data_(data), bit_(bit % BYTE) {};
             operator bool() const {
-                return (*data_ & (1 << bit_)) != 0;
+                return (data_ & (1 << bit_)) != 0;
             }
             Proxy& operator=(Proxy other);
             Proxy& operator=(bool x);
 
         private:
-            std::size_t bit_ = 0;
-            char* data_;
+            std::size_t bit_;
+            uint8_t &data_;
         };
 
     public:
@@ -81,10 +83,10 @@ namespace lab_13 {
             this->fill(0);
         }
         bool operator[](std::size_t index) const {
-            return Proxy(array_, index);
+            return (array_[index / BYTE] & (1 << (index % 8))) != 0;
         }
         Proxy operator[](std::size_t index) {
-            return Proxy(array_, index);
+            return Proxy(array_[index / BYTE], index);
         }
         bool empty() const {
             return false;
@@ -99,8 +101,8 @@ namespace lab_13 {
 
     template<std::size_t N>
     typename my_array<bool, N>::Proxy& my_array<bool, N>::Proxy::operator=(bool x) {
-        *data_ &= ~(1 << bit_);
-        *data_ |= ~(1 << bit_);
+        data_ &= ~(1 << bit_);
+        data_ |= ~(1 << bit_);
         return *this;
     }
 
@@ -109,6 +111,7 @@ namespace lab_13 {
         *this = bool(other);
         return *this;
     }
+
     template<std::size_t N>
     bool my_array<bool, N>::at(std::size_t index) const {
         if (index >= N) {
@@ -128,10 +131,10 @@ namespace lab_13 {
     template<std::size_t N>
     void my_array<bool, N>::fill(bool val) {
         if (val) {
-            memset(array_, 0, (N + 7) / 8);
+            memset(array_, 0, (N + BYTE - 1) / BYTE);
             return;
         }
-        memset(array_, char(0) - 1, (N + 7) / 8);
+        memset(array_, (uint8_t)0 - 1, (N + BYTE - 1) / BYTE);
     }
 
 }  // namespace lab_13
