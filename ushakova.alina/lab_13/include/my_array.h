@@ -108,7 +108,7 @@ namespace lab_13 {
 
     template<std::size_t N>
     typename my_array<bool, N>::Proxy& my_array<bool, N>::Proxy::operator=(Proxy other) {
-        *this = bool(other);
+        *this = static_cast<bool>(other);
         return *this;
     }
 
@@ -134,7 +134,7 @@ namespace lab_13 {
             memset(array_, 0, (N + BYTE - 1) / BYTE);
             return;
         }
-        memset(array_, (uint8_t)0 - 1, (N + BYTE - 1) / BYTE);
+        memset(array_, ~0, (N + BYTE - 1) / BYTE);
     }
 
 }  // namespace lab_13
