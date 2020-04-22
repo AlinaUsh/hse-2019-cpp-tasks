@@ -1,0 +1,42 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/osboxes/CLionProjects/hw_03/include/CLI.h
+bits/exception.h
+-
+string
+-
+cstring
+-
+
+/home/osboxes/CLionProjects/hw_03/include/Huffman.h
+map
+-
+
+/home/osboxes/CLionProjects/hw_03/include/HuffmanArchiver.h
+Huffman.h
+/home/osboxes/CLionProjects/hw_03/include/Huffman.h
+fstream
+-
+
+/home/osboxes/CLionProjects/hw_03/src/CLI.cpp
+../include/CLI.h
+/home/osboxes/CLionProjects/hw_03/include/CLI.h
+utility
+-
+iostream
+-
+
+/home/osboxes/CLionProjects/hw_03/src/main.cpp
+iostream
+-
+../include/CLI.h
+/home/osboxes/CLionProjects/hw_03/include/CLI.h
+../include/HuffmanArchiver.h
+/home/osboxes/CLionProjects/hw_03/include/HuffmanArchiver.h
+
