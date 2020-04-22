@@ -1,4 +1,0 @@
-/home/osboxes/CLionProjects/hw_03/CMakeFiles/rebuild_cache.dir
-/home/osboxes/CLionProjects/hw_03/CMakeFiles/edit_cache.dir
-/home/osboxes/CLionProjects/hw_03/CMakeFiles/hw_03.dir
-/home/osboxes/CLionProjects/hw_03/CMakeFiles/test_hw_03.dir
