@@ -38,21 +38,12 @@ namespace linq {
 
             template<typename U = T, typename F>
             auto select(F func) {
-                return select_enumerator<U, T, F>(*this, func);
+                return select_enumerator<U, T, F>(*this, std::move(func));
             }
 
             template<typename F>
             auto until(F func) {
-                return until_enumerator<T, F>(*this, func);
-            }
-
-            std::vector<T> to_vector() {
-                std::vector<T> v;
-                while (*this) {
-                    v.push_back(**this);
-                    ++(*this);
-                }
-                return v;
+                return until_enumerator<T, F>(*this, std::move(func));
             }
 
             template<typename Iter>
@@ -64,6 +55,12 @@ namespace linq {
                 }
             }
 
+            std::vector<T> to_vector() {
+                std::vector<T> v;
+                this->copy_to(std::back_inserter(v));
+                return v;
+            }
+
             auto until_eq(const T& val) {
                 auto pred = [val](const T& x) {
                     return x == val;
@@ -73,7 +70,7 @@ namespace linq {
 
             template <typename P>
             auto where(P pred) {
-                return where_enumerator<T, P>(*this, pred);
+                return where_enumerator<T, P>(*this, std::move(pred));
             }
 
             auto where_neq(const T& val) {
@@ -165,10 +162,13 @@ namespace linq {
         public:
             where_enumerator(enumerator<T>& parent, P pred) : parent_(parent), predicate_(pred) { }
             const T& operator*() override { return *parent_; }
-            explicit operator bool() const {
-                while (parent_ && !predicate_(*parent_))
+            explicit operator bool() const override {
+                bool cur_ = predicate_(*parent_);
+                while (parent_ && !cur_) {
                     ++parent_;
-                return parent_ && predicate_(*parent_);
+                    cur_ = predicate_(*parent_);
+                }
+                return parent_ && cur_;
             }
             where_enumerator& operator++() override {
                 ++parent_;
