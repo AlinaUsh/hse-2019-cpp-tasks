@@ -1,4 +1,4 @@
-#include "linq.h"
+#include "linq.hpp"
 #include <math.h>
 #include <assert.h>
 #include <vector>
